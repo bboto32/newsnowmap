@@ -1,0 +1,7 @@
+*.png
+*.sock
+*.pyc
+__pychache__/
+images/
+data/
+

@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+	<title>New Snow Map</title>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+	<script type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; </script>
+	<script src="https://api.mapy.cz/loader.js"></script>
+	<script>Loader.load()</script>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+	<style>
+	    body {
+	    background-image:url('/../static/snow01.gif');
+	    background-size:100%;
+	    background-repeat: repeat-y;
+	    background-attachment: fixed;
+	    height:100%;
+	    width:100%;
+		}
+	</style>
+</head>
+
+<body style="background-color:powderblue;font-family:'Courier New';font-size:20px;">
+	<center>
+		<div class="container">
+			<form>
+				<label for="start">Start date:</label>
+				<input type="date" id="start_date" name=start_date min="2021-01-15">
+			</form>
+			<script>document.getElementById('start_date').value = new Date().toISOString().slice(0, 10);</script>
+			<script>document.getElementById('start_date').max = new Date().toISOString().slice(0, 10);</script>
+		</div>
+		<div class="container">
+			<form>
+				<label class="inline-radio">Start hour (:00 minutes):<input type="radio" name="start_hour" id="sh0" value="0" checked>0</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh1" value="1">1</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh2" value="2">2</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh3" value="3">3</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh4" value="4">4</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh5" value="5">5</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh6" value="6">6</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh7" value="7">7</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh8" value="8">8</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh9" value="9">9</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh10" value="10">10</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh11" value="11">11</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh12" value="12">12</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh13" value="13">13</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh14" value="14">14</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh15" value="15">15</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh16" value="16">16</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh17" value="17">17</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh18" value="18">18</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh19" value="19">19</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh20" value="20">20</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh21" value="21">21</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh22" value="22">22</label>
+				<label class="inline-radio"><input type="radio" name="start_hour" id="sh23" value="23">23</label>
+			</form>
+		</div>
+		<br>
+		<div class="container">
+			<form>
+				<label for="end">End date:</label>
+				<input type="date" id="end_date" name=end_date min="2021-01-15">
+			</form>
+			<script>document.getElementById('end_date').value = new Date().toISOString().slice(0, 10);</script>
+			<script>document.getElementById('end_date').max = new Date().toISOString().slice(0, 10);</script>
+		</div>
+		<div class="container">
+			<form>
+				<label class="inline-radio">End hour (:59 minutes):<input type="radio" name="end_hour" id="eh0" value="0">0</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh1" value="1">1</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh2" value="2">2</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh3" value="3">3</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh4" value="4">4</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh5" value="5">5</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh6" value="6">6</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh7" value="7">7</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh8" value="8">8</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh9" value="9">9</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh10" value="10">10</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh11" value="11">11</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh12" value="12">12</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh13" value="13">13</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh14" value="14">14</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh15" value="15">15</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh16" value="16">16</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh17" value="17">17</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh18" value="18">18</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh19" value="19">19</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh20" value="20">20</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh21" value="21">21</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh22" value="22">22</label>
+				<label class="inline-radio"><input type="radio" name="end_hour" id="eh23" value="23">23</label>
+			</form>
+			<script>
+				var d = new Date();
+				var h = d.getHours();
+				var m = d.getMinutes();
+				if (m < 10) {
+					document.getElementById('eh' + (h-2).toString()).checked = true;
+					} else {
+					document.getElementById('eh' + (h-1).toString()).checked = true;
+					};
+			</script>
+		</div>
+		<br>
+		<p><button id=calculate>Update map!</button></p>
+		<div id="loadingGif" style="display:none"><img src="/../static/loading3.gif" width="150" height="150"></div>
+		<p><span id=output>Hit update map to show snowfall!</span></p>
+	</center>
+	<script>
+		function refresh(img_name) {
+			vrstva.removeAll();
+			vrstva.addImage("/../static/" + img_name + ".png", leftTop, rightBottom, .65);
+			}
+		function reload() {
+			$.ajax({
+				url: $SCRIPT_ROOT + '/get_total_snowfall',
+				type: 'POST',
+				dataType: 'json',
+				data: {start_date:$('input[name="start_date"]').val(), start_hour:$('input[name="start_hour"]:checked').val(),
+					end_date:$('input[name="end_date"]').val(), end_hour:$('input[name="end_hour"]:checked').val()},
+				context: document.body,
+				success: function(data){
+					refresh(data.img_name);
+					$("#output").text('Showing total snowfall from ' + data.start_dt + ' ' + data.start_hour + ' to ' + data.end_dt + ' ' + data.end_hour);
+					document.getElementById('calculate').style.display = "block";
+					document.getElementById('loadingGif').style.display = "none";
+					$("#legend").remove();
+					$("#output").after("<img id=legend>");
+					$("#legend").attr({"src": "/../static/" + data.img_name + "_legend.png"});
+					$("#legend").center();
+					}
+				});
+			}
+		$('button#calculate').bind('click', function() {
+			var start_dt = Date.parse($('input[name="start_date"]').val());
+			var end_dt = Date.parse($('input[name="end_date"]').val());
+			var start_hr = parseInt($('input[name="start_hour"]:checked').val());
+			var end_hr = parseInt($('input[name="end_hour"]:checked').val());
+
+			if ((start_dt > end_dt) || ((start_dt == end_dt) && (start_hr > end_hr))) {
+				alert("Start is after the end!");
+				} else {
+				document.getElementById('calculate').style.display = "none";
+				document.getElementById('loadingGif').style.display = "block";
+				reload();
+				}
+			}
+		);
+	</script>
+	<div id="mapa" style="width:1200; height:800px;"></div>
+		<script type="text/javascript">
+			var stred = SMap.Coords.fromWGS84(19.24, 49.14);
+			var mapa = new SMap(JAK.gel("mapa"), stred, 10);
+			mapa.addDefaultLayer(SMap.DEF_TURIST).enable();
+			mapa.addDefaultControls();
+
+			var vrstva = new SMap.Layer.Image();     /* Obrázková vrstva */
+			mapa.addLayer(vrstva);                      /* Přidat ji do mapy */
+			vrstva.enable();                         /* A povolit */
+
+			/* Přidat do vrstvy obrázek */
+			var leftTop = SMap.Coords.fromWGS84(16.66, 49.76);
+			var rightBottom = SMap.Coords.fromWGS84(22.89, 47.63);
+	//		vrstva.addImage("/../static/total_snow.png", leftTop, rightBottom, 10);
+		</script>
+</body>
+</html>
+
+<!--big square-->
+<!-- 50.69916541618182, 13.602575020080613
+46.05417683920819, 23.78401388324766
+-->
+<!--small square-->
+<!--49.75728751213041, 16.657417454338443-->
+<!--47.634072854239285, 22.88558253499615-->
