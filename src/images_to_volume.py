@@ -8,7 +8,7 @@ import os
 os.chdir('/home/boto/newsnowmap')
 
 # get new snow #
-snow_colors = cv2.imread('./images/colors.png')[0, :, :].tolist()
+snow_colors = cv2.imread('./static/colors.png')[0, :, :].tolist()
 # TODO: change volumes
 color_to_volume = [0.3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 50, 65, 80, 95, 110]
 # color_to_volume = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 50, 65, 80, 95, 110, 125]

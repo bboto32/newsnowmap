@@ -1,4 +1,6 @@
 *.png
+!colors.png
+!data.1hrain.png
 *.sock
 *.pyc
 __pychache__/
