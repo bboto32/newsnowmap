@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, jsonify
 import total_snow as ts
 from datetime import datetime, timedelta
+import pytz
 import os
 
 app = Flask(__name__)
@@ -19,17 +20,14 @@ def get_total_snowfall():
     end_date = request.form['end_date'].replace('-', '')
     end_hour = request.form['end_hour'].rjust(2, '0')+'59'
 
-    start = datetime.strptime(start_date+'.'+start_hour, '%Y%m%d.%H%M')
-    end = datetime.strptime(end_date+'.'+end_hour, '%Y%m%d.%H%M')
+    start_cet = pytz.timezone("Europe/Prague").localize(datetime.strptime(start_date+'.'+start_hour, '%Y%m%d.%H%M'))
+    end_cet = pytz.timezone("Europe/Prague").localize(datetime.strptime(end_date+'.'+end_hour, '%Y%m%d.%H%M'))
 
+    start = start_cet.astimezone(pytz.timezone("UTC"))
+    end = end_cet.astimezone(pytz.timezone("UTC"))
     # timezone adjustment #
     # for request 10:00 - 12:59 CET I need data from 11, 12, 13 hour CET - that is 10, 11, 12 hour UTC #
     # for request 10:00 - 12:59 CEST I need data from 11, 12, 13 hour CEST - that is 9, 10, 11 hour UTC #
-    time_change = datetime.strptime('20210328.0300', '%Y%m%d.%H%M')
-    if start > time_change:
-        start = start - timedelta(hours=1)
-    if end > time_change:
-        end = end - timedelta(hours=1)
 
     # check if image exists otherwise create it #
     gen_img = os.listdir('./static')

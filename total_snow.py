@@ -4,18 +4,38 @@ import matplotlib.cm as cm
 from matplotlib.colors import Normalize
 import matplotlib.pyplot as plt
 import numpy as np
+from datetime import datetime, timedelta
 
 
 def total_snow(start, end):
+    start_d = datetime.strftime(start, '%Y%m%d')
+    start_h = int(datetime.strftime(start, '%H'))
+    end_d = datetime.strftime(end, '%Y%m%d')
+    end_h = int(datetime.strftime(end, '%H'))
 
-    # load data #
-    with open('./data/snowfalls.npy', 'rb') as f:
-        snow_falls = np.load(f, allow_pickle=True)
-    with open('./data/snowfalls_date.npy', 'rb') as f:
-        t = np.load(f, allow_pickle=True)
+    actual = start
+    if start_d == end_d: # if start and end is the same day
+        with open('./data/snowfalls'+start_d+'.npy', 'rb') as f:
+            snow_falls = np.load(f, allow_pickle=True)
+        total_snow = np.sum(snow_falls[start_h:end_h+1], axis=0)
+    else: # if start day < end day
+        # part of first day #
+        with open('./data/snowfalls'+start_d+'.npy', 'rb') as f:
+            snow_falls = np.load(f, allow_pickle=True)
+        total_snow = np.sum(snow_falls[start_h:], axis=0)
 
-    # sum new snow from start to end #
-    total_snow = np.sum(snow_falls[(start <= t) & (t <= end)], axis=0)
+        # whole middle days #
+        actual = actual + timedelta(days=1)
+        while actual.date() < end.date():
+            with open('./data/snowfalls'+datetime.strftime(actual, '%Y%m%d')+'.npy', 'rb') as f:
+                snow_falls = np.load(f, allow_pickle=True)
+            total_snow += np.sum(snow_falls, axis=0)
+            actual = actual + timedelta(days=1)
+
+        # part of last day #
+        with open('./data/snowfalls'+datetime.strftime(actual, '%Y%m%d')+'.npy', 'rb') as f:
+            snow_falls = np.load(f, allow_pickle=True)
+        total_snow += np.sum(snow_falls[:end_h+1], axis=0)
 
     # handle outliers #
     max_snow = np.percentile(total_snow, 99.9)

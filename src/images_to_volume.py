@@ -5,7 +5,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import os
 
-os.chdir('/home/boto/snowfall')
+os.chdir('/home/boto/newsnowmap')
 
 # get new snow #
 snow_colors = cv2.imread('./images/colors.png')[0, :, :].tolist()
@@ -43,52 +43,43 @@ def img_to_matrix(img):
 # add new snow #
 # TODO: convert snow to rain if temperature is above 0 degree Celsius
 
-# init #
-# start_dt = datetime.strptime('20210115.0000', '%Y%m%d.%H%M')
-# end_dt = datetime.strptime('20210115.0300', '%Y%m%d.%H%M')
-# t = np.arange(start_dt, end_dt, timedelta(hours=1)).astype(datetime)
-# snow_falls = np.zeros((len(t), 253, 490))
-#
-# i = 0
-# for time in t:
-#     new_dt = datetime.strftime(time, '%Y%m%d.%H%M')
-#     img = cv2.imread('./images/pcp.1h.'+new_dt+'.0.png')
-#     img = crop_img(img)
-#     new_snow = img_to_matrix(img)
-#     snow_falls[i, :, :] = new_snow
-#     i += 1
-#
-# with open('./data/snowfalls.npy', 'wb') as f:
-#     np.save(f, snow_falls)
-# with open('./data/snowfalls_date.npy', 'wb') as f:
-#     np.save(f, t)
-#
-
-with open('./data/snowfalls.npy', 'rb') as f:
-    snow_falls = np.load(f, allow_pickle=True)
-with open('./data/snowfalls_date.npy', 'rb') as f:
-    t = np.load(f, allow_pickle=True)
 with open('./data/downloaded', 'r') as f:
+    first_downl = f.readline().strip()
     for line in f:
         pass
-    last = line.strip()
+    last_downl = line.strip()
 
-last_img_dt = t[-1]
-max_img_dt = datetime.strptime(last, '%Y%m%d.%H%M')
+try:
+    with open('./data/processed', 'r') as f:
+        for line in f:
+            pass
+        last_process = line.strip()
+except FileNotFoundError:
+    first_downl = datetime.strptime(first_downl, '%Y%m%d.%H%M')
+    last_process = datetime.strftime(first_downl - timedelta(hours=1), '%Y%m%d.%H%M')
+
+last_img_dt = datetime.strptime(last_process, '%Y%m%d.%H%M')
+max_img_dt = datetime.strptime(last_downl, '%Y%m%d.%H%M')
 
 while max_img_dt > last_img_dt:
     new_img_dt = last_img_dt + timedelta(hours=1)
     new_dt = datetime.strftime(new_img_dt, '%Y%m%d.%H%M')
+    new_d = datetime.strftime(new_img_dt, '%Y%m%d')
     img = cv2.imread('./images/pcp.1h.'+new_dt+'.0.png')
     img = crop_img(img)
     new_snow = img_to_matrix(img)
-    snow_falls = np.append(snow_falls, new_snow, axis=0)
-    t = np.append(t, new_img_dt)
+    try:
+        with open('./data/snowfalls'+new_d+'.npy', 'rb') as f:
+            snow_falls = np.load(f, allow_pickle=True)
+            snow_falls = np.append(snow_falls, new_snow, axis=0)
+        with open('./data/snowfalls'+new_d+'.npy', 'wb') as f:
+            np.save(f, snow_falls)
+    except FileNotFoundError:
+        with open('./data/snowfalls'+new_d+'.npy', 'wb') as f:
+            np.save(f, new_snow)
     last_img_dt = new_img_dt
 
-with open('./data/snowfalls.npy', 'wb') as f:
-    np.save(f, snow_falls)
-with open('./data/snowfalls_date.npy', 'wb') as f:
-    np.save(f, t)
+with open('./data/processed', 'a') as f:
+    f.write(new_dt+'\n')
 
-print('Processing done!', datetime.now())
+print('Processing done!', datetime.utcnow(), 'UTC')
