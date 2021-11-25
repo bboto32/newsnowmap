@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ~/newsnowmap_env/bin/activate
+. ~/newsnowmap_env/bin/activate
 
 cd ~/newsnowmap
 
