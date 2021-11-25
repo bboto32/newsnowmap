@@ -79,7 +79,10 @@ while max_img_dt > last_img_dt:
             np.save(f, new_snow)
     last_img_dt = new_img_dt
 
-with open('./data/processed', 'a') as f:
-    f.write(new_dt+'\n')
+try:
+    with open('./data/processed', 'a') as f:
+        f.write(new_dt+'\n')
+except NameError:
+    pass
 
 print('Processing done!', datetime.utcnow(), 'UTC')
