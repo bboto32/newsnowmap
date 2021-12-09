@@ -141,8 +141,13 @@
 			var start_hr = parseInt($('input[name="start_hour"]:checked').val());
 			var end_hr = parseInt($('input[name="end_hour"]:checked').val());
 
+			var d = Date.parse(new Date());
+			var end = Date.parse($('input[name="end_date"]').val().toString() + "T" + $('input[name="end_hour"]:checked').val().toString() + ":59:00.000+01:00") + 660000;
+
 			if ((start_dt > end_dt) || ((start_dt == end_dt) && (start_hr > end_hr))) {
 				alert("Start is after the end!");
+				} else if (end > d) {
+				alert("Data not available yet!");
 				} else {
 				document.getElementById('calculate').style.display = "none";
 				document.getElementById('loadingGif').style.display = "block";

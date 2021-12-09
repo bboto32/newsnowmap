@@ -10,8 +10,6 @@ app = Flask(__name__)
 def my_func():
     return render_template('snowfall.html')
 
-# TODO: timezone
-# TODO: do not allow generate image above now()
 @app.route('/get_total_snowfall', methods=['POST', 'GET'])
 def get_total_snowfall():
     # get and process user input #
