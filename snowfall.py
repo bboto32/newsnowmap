@@ -40,8 +40,8 @@ def get_total_snowfall():
         ts.save_img(my_img, my_img_name + '.png')
         ts.save_legend(my_snow, my_img_name)
 
-    return jsonify(start_dt=datetime.strftime(start.date(), '%d.%m.%Y'), start_hour=start_hour[:2]+':00',
-                   end_dt=datetime.strftime(end.date(), '%d.%m.%Y'), end_hour=end_hour[:2]+':59',
+    return jsonify(start_dt=datetime.strftime(start_cet.date(), '%d.%m.%Y'), start_hour=start_hour[:2]+':00',
+                   end_dt=datetime.strftime(end_cet.date(), '%d.%m.%Y'), end_hour=end_hour[:2]+':59',
                    img_name=my_img_name)
 
 if __name__=='__main__':
